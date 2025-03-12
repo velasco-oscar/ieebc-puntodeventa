@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('proveedor_id');
             $table->timestamps();
             $table->softDeletes();
+            $table->imagen();
         });
     }
 
