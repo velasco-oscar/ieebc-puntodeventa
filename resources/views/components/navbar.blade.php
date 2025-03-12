@@ -18,6 +18,8 @@
             <a href="#" class="text-sm font-semibold text-gray-900">Product</a>
             <a href="#" class="text-sm font-semibold text-gray-900">Features</a>
             <a href="#" class="text-sm font-semibold text-gray-900">Marketplace</a>
+            <a href="{{ route('register') }}" class="text-sm font-semibold text-gray-900">Register</a>
+
             <a href="{{ route('login') }}" class="text-sm font-semibold text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
         </div>
     </nav>

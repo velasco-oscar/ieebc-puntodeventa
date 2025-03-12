@@ -22,6 +22,8 @@ Route::middleware(['auth'])->group(function () {
     })->name('dashboard');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index');
+
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
@@ -31,4 +33,5 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('ventas', VentaController::class);
     Route::resource('detalle_ventas', DetalleVentaController::class);
     Route::resource('lista_deseos', ListaDeseoController::class);
+    
 });
