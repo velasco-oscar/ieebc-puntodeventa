@@ -11,17 +11,15 @@ return new class extends Migration
      */
     public function up()
 {
-    if (!Schema::hasTable('detalle_ventas')) {
-        Schema::create('detalle_ventas', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('venta_id')->constrained('ventas');
-            $table->foreignId('producto_id')->constrained('productos');
-            $table->integer('cantidad');
-            $table->decimal('precio_unitario', 8, 2);
-            $table->decimal('subtotal', 8, 2);
-            $table->timestamps();
-        });
-    }
+    Schema::create('detalle_ventas', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('venta_id')->constrained('ventas')->onDelete('cascade');
+        $table->foreignId('producto_id')->constrained('productos');
+        $table->integer('cantidad');
+        $table->decimal('precio_unitario', 8, 2);
+        $table->decimal('subtotal', 8, 2);
+        $table->timestamps();
+    });
 }
 
 public function down()
