@@ -20,22 +20,26 @@ class CartController extends Controller
     
     public function add(Request $request, $id)
     {
-        $cart = Cart::firstOrCreate(['user_id' => Auth::id()]);
+       
+    $quantity = $request->input('quantity', 1);
 
     
-         $cartItem = CartItem::where('cart_id', $cart->id)
-            ->where('producto_id', $id)
-            ->first();
+    $cart = Cart::firstOrCreate(['user_id' => Auth::id()]);
+
+
+    $cartItem = CartItem::where('cart_id', $cart->id)
+                        ->where('producto_id', $id)
+                        ->first();
 
     if ($cartItem) {
-    
-        $cartItem->increment('quantity');
+        
+        $cartItem->increment('quantity', $quantity);
     } else {
-    
+        
         CartItem::create([
             'cart_id' => $cart->id,
             'producto_id' => $id,
-            'quantity' => 1,
+            'quantity' => $quantity,
         ]);
     }
 
@@ -45,6 +49,9 @@ class CartController extends Controller
     
     public function remove($id)
     {
-        
+        $cartItem = \App\Models\CartItem::findOrFail($id);
+        $cartItem->delete();
+    
+        return redirect()->back()->with('success', 'Producto eliminado del carrito.');
     }
 }
