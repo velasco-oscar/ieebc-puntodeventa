@@ -49,6 +49,12 @@
                     @endforeach
                 </tbody>
             </table>
+                 <!-- Botón de Checkout -->
+                 <div class="mt-4 flex justify-end">
+                <a href="{{ route('checkout.index') }}" class="bg-custom-red text-white px-4 py-2 rounded hover:bg-custom-red-hover">
+                    Checkout
+                </a>
+            </div>
         @endif
     </div>
 </x-app-layout>

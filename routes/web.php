@@ -9,6 +9,7 @@ use App\Http\Controllers\VentaController;
 use App\Http\Controllers\DetalleVentaController;
 use App\Http\Controllers\ListaDeseoController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,6 +40,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
         Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
         Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+        Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+        Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
     });
     
     
