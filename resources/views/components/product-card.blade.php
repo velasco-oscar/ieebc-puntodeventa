@@ -13,8 +13,15 @@
         <h2 class="text-xl font-semibold text-gray-800">{{ $producto->nombre }}</h2>
         <p class="mt-2 text-gray-600">{{ $producto->descripcion }}</p>
         <div class="mt-4 flex items-center justify-between">
-            <span class="text-lg font-bold text-indigo-600">${{ number_format($producto->precio, 2) }}</span>
+            <span class="text-lg font-bold text-custom-red">${{ number_format($producto->precio, 2) }}</span>
             <span class="text-sm text-gray-500">Stock: {{ $producto->stock }}</span>
         </div>
+        <form method="POST" action="{{ route('cart.add', $producto->id) }}">
+    @csrf
+        <button type="submit" class="mt-4 bg-custom-red text-white px-4 py-2 rounded hover:bg-custom-red-hover">
+            Agregar al carrito
+        </button>
+    </form>
+
     </div>
 </div>

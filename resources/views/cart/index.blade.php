@@ -7,23 +7,39 @@
             <table class="min-w-full bg-white">
                 <thead>
                     <tr>
-                        <th class="py-2 px-4 border-b">Producto</th>
-                        <th class="py-2 px-4 border-b">Cantidad</th>
-                        <th class="py-2 px-4 border-b">Precio</th>
-                        <th class="py-2 px-4 border-b">Subtotal</th>
-                        <th class="py-2 px-4 border-b">Acciones</th>
+                        <th class="py-2 px-4 border-b text-center">Imagen</th>
+                        <th class="py-2 px-4 border-b text-center">Producto</th>
+                        <th class="py-2 px-4 border-b text-center">Cantidad</th>
+                        <th class="py-2 px-4 border-b text-center">Precio</th>
+                        <th class="py-2 px-4 border-b text-center">Subtotal</th>
+                        <th class="py-2 px-4 border-b text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($cart->items as $item)
                         <tr>
-                            <td class="py-2 px-4 border-b">{{ $item->producto->nombre }}</td>
-                            <td class="py-2 px-4 border-b">{{ $item->quantity }}</td>
-                            <td class="py-2 px-4 border-b">${{ number_format($item->producto->precio, 2) }}</td>
-                            <td class="py-2 px-4 border-b">
-                                ${{ number_format($item->quantity * $item->producto->precio, 2) }}
+                            <!-- Imagen -->
+                            <td class="py-2 px-4 border-b text-center">
+                                @if($item->producto->imagen)
+                                    <img src="{{ Str::startsWith($item->producto->imagen, 'http') ? $item->producto->imagen : asset('storage/' . $item->producto->imagen) }}"
+                                         alt="{{ $item->producto->nombre }}"
+                                         class="h-12 w-12 object-cover mx-auto">
+                                @else
+                                    <div class="h-12 w-12 bg-gray-200 flex items-center justify-center mx-auto">
+                                        <span class="text-gray-500 text-xs">Sin imagen</span>
+                                    </div>
+                                @endif
                             </td>
-                            <td class="py-2 px-4 border-b">
+                            <!-- Producto -->
+                            <td class="py-2 px-4 border-b text-center">{{ $item->producto->nombre }}</td>
+                            <!-- Cantidad -->
+                            <td class="py-2 px-4 border-b text-center">{{ $item->quantity }}</td>
+                            <!-- Precio -->
+                            <td class="py-2 px-4 border-b text-center">${{ number_format($item->producto->precio, 2) }}</td>
+                            <!-- Subtotal -->
+                            <td class="py-2 px-4 border-b text-center">${{ number_format($item->quantity * $item->producto->precio, 2) }}</td>
+                            <!-- Acciones -->
+                            <td class="py-2 px-4 border-b text-center">
                                 <form action="{{ route('cart.remove', $item->id) }}" method="POST">
                                     @csrf
                                     <button type="submit" class="text-red-500 hover:underline">Eliminar</button>
