@@ -42,6 +42,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
         Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
         Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+        Route::get('/checkout/thankyou', function () {
+            return view('checkout.thankyou');
+        })->name('checkout.thankyou');
     });
     
     

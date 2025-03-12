@@ -52,6 +52,7 @@ class CheckoutController extends Controller
 
         $cart->items()->delete();
 
-        return redirect()->route('dashboard')->with('success', 'Venta realizada exitosamente.');
+        return redirect()->route('checkout.thankyou')->with('venta', $venta);
+
     }
 }
