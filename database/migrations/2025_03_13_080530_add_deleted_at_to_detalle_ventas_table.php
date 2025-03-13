@@ -11,17 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('detalle_ventas', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('detalle_ventas', function (Blueprint $table) {
+            $table->timestamp('deleted_at')->nullable()->after('updated_at');
         });
     }
+    
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
-    {
-        Schema::dropIfExists('detalle_ventas');
-    }
+{
+    Schema::table('detalle_ventas', function (Blueprint $table) {
+        $table->dropColumn('deleted_at');
+    });
+}
+
 };

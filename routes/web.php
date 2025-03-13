@@ -23,12 +23,6 @@ Route::middleware(['auth'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index');
-
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
     Route::resource('clientes', ClienteController::class);
     Route::resource('productos', ProductoController::class);
     Route::resource('proveedores', ProveedorController::class);
@@ -36,16 +30,19 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('detalle_ventas', DetalleVentaController::class);
     Route::resource('lista_deseos', ListaDeseoController::class);
 
-    Route::middleware(['auth'])->group(function () {
-        Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-        Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
-        Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
-        Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-        Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
-        Route::get('/checkout/thankyou', function () {
-            return view('checkout.thankyou');
-        })->name('checkout.thankyou');
-    });
-    
-    
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/checkout/thankyou', function () {
+        return view('checkout.thankyou');
+    })->name('checkout.thankyou');
+
+    Route::get('/mis-ordenes', [VentaController::class, 'misOrdenes'])->name('ventas.mis_ordenes');
 });

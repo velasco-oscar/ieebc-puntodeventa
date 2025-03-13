@@ -18,4 +18,9 @@ class DetalleVenta extends Model
     ];
 
     protected $dates = ['deleted_at'];
+    
+    public function producto()
+    {
+        return $this->belongsTo(Producto::class);
+    }
 }

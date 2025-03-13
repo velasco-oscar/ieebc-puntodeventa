@@ -42,6 +42,10 @@
                             <x-dropdown-link :href="route('profile.edit')">
                                 {{ __('Profile') }}
                             </x-dropdown-link>
+                            <x-dropdown-link :href="route('ventas.mis_ordenes')">
+                                {{ __('Pedidos') }}
+                            </x-dropdown-link>
+
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <x-dropdown-link :href="route('logout')"
@@ -79,9 +83,12 @@
             <a href="{{ route('cart.index') }}" class="text-gray-900 block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100">Carrito</a>
             @if(Auth::check())
                 <a href="{{ route('profile.edit') }}" class="text-gray-900 block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100">Profile</a>
+                <a href="{{ route('ventas.mis_ordenes') }}" class="text-gray-900 block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100">Pedidos</a>
                 <form method="POST" action="{{ route('logout') }}" class="block">
                     @csrf
-                    <button type="submit" class="w-full text-left text-gray-900 block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100">Log Out</button>
+                    <button type="submit" class="w-full text-left text-gray-900 block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100">
+                        Log Out
+                    </button>
                 </form>
             @else
                 <a href="{{ route('login') }}" class="text-gray-900 block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100">Log in</a>

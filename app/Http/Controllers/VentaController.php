@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Venta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VentaController extends Controller
 {
@@ -61,5 +62,23 @@ class VentaController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function misOrdenes()
+    {
+        // Suponiendo que cada usuario tiene un cliente asociado a través de una relación
+        $clienteId = Auth::user()->cliente->id ?? null;
+
+        if (!$clienteId) {
+            return redirect()->route('dashboard')->with('error', 'No tienes un cliente asociado.');
+        }
+
+        // Obtenemos las ventas del cliente, junto con los detalles y productos
+        $ventas = Venta::where('cliente_id', $clienteId)
+                       ->with('detalleVentas.producto')
+                       ->orderBy('fecha', 'desc')
+                       ->get();
+
+        return view('ventas.mis_ordenes', compact('ventas'));
     }
 }
