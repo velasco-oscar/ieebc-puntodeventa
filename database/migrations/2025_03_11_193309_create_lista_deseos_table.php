@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('lista_deseos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('cliente_id')->constrained('clientes')->onDelete('cascade');
+            $table->foreignId('producto_id')->constrained('productos')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes(); 
         });
     }
 

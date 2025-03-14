@@ -10,6 +10,9 @@ use App\Http\Controllers\DetalleVentaController;
 use App\Http\Controllers\ListaDeseoController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\WishlistController;
+use App\Http\Livewire\Wishlist; 
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -44,5 +47,14 @@ Route::middleware(['auth'])->group(function () {
         return view('checkout.thankyou');
     })->name('checkout.thankyou');
 
+
     Route::get('/mis-ordenes', [VentaController::class, 'misOrdenes'])->name('ventas.mis_ordenes');
+
+    Route::post('/wishlist/add/{producto}', [WishlistController::class, 'store'])
+     ->name('wishlist.add');
+
+     Route::delete('/wishlist/remove/{id}', [WishlistController::class, 'destroy'])
+     ->name('wishlist.remove');
+
+    Route::get('/wishlist', Wishlist::class)->name('wishlist.index');
 });
