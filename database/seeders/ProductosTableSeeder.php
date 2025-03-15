@@ -19,9 +19,9 @@ class ProductosTableSeeder extends Seeder
         ]);
 
         Producto::create([
-            'nombre' => 'Jorney Together Booster Bundle',
+            'nombre' => 'Journey Together Booster Bundle',
             'descripcion' => 'Caja con 6 sobres',
-            'precio' => 75.50,
+            'precio' => 400.00,
             'stock' => 50,
             'proveedor_id' => 1,
             'imagen' => 'https://m.media-amazon.com/images/I/81rWT3qf9FL.jpg',

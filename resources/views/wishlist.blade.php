@@ -1,3 +1,3 @@
 <x-app-layout>
-<livewire:wishlist />
+    @livewire('wishlist')
 </x-app-layout>

@@ -18,26 +18,32 @@ class CartController extends Controller
     }
 
     
-    public function add(Producto $producto, Request $request)
+    public function add(Request $request, $id)
     {
-        try {
-            $request->validate(['quantity' => 'required|numeric|min:1']);
-            
-            auth()->user()->cartItems()->updateOrCreate(
-                ['producto_id' => $producto->id],
-                ['quantity' => $request->quantity]
-            );
+       
+    $quantity = $request->input('quantity', 1);
 
-            return response()->json([
-                'success' => true,
-                'in_cart' => true
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'error' => 'Error: ' . $e->getMessage()
-            ], 500);
-        }
+    
+    $cart = Cart::firstOrCreate(['user_id' => Auth::id()]);
+
+
+    $cartItem = CartItem::where('cart_id', $cart->id)
+                        ->where('producto_id', $id)
+                        ->first();
+
+    if ($cartItem) {
+        
+        $cartItem->increment('quantity', $quantity);
+    } else {
+        
+        CartItem::create([
+            'cart_id' => $cart->id,
+            'producto_id' => $id,
+            'quantity' => $quantity,
+        ]);
+    }
+
+    return redirect()->back()->with('success', 'Producto agregado al carrito.');
     }
 
     

@@ -41,7 +41,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/add/{producto}', [CartController::class, 'add'])->name('cart.add');
+
     Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
@@ -66,6 +67,6 @@ Route::middleware(['auth', 'can:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-        Route::resource('products', ProductoController::class);
-        Route::resource('providers', ProveedorController::class);
+        Route::resource('productos', ProductoController::class); 
+        Route::resource('proveedores', ProveedorController::class); 
     });
