@@ -9,7 +9,7 @@ class Producto extends Model
 {
     use SoftDeletes;
 
-    // Required for mass assignment
+    
     protected $fillable = [
         'nombre',
         'descripcion',
@@ -18,9 +18,15 @@ class Producto extends Model
         'proveedor_id'
     ];
 
-    // Add relationship to Proveedor if needed
+    
     public function proveedor()
     {
         return $this->belongsTo(Proveedor::class);
     }
+
+    public function cliente()
+{
+    return $this->belongsTo(Cliente::class);
+}
+
 }
