@@ -5,7 +5,9 @@
          showCartToast: false,
          showErrorToast: false,
          inCart: @js($inCart),
-         isSubmitting: false
+         isSubmitting: false,
+         currentStock: @js($producto->stock),
+         quantity: 1
      }"
      x-cloak>
     <!-- Image Section -->
@@ -68,7 +70,7 @@
                 ${{ number_format($producto->precio, 2) }}
             </span>
             <span class="text-sm text-gray-500">
-                Stock: {{ $producto->stock }}
+                Stock: <span x-text="currentStock"></span>
             </span>
         </div>
         
@@ -78,6 +80,15 @@
               x-ref="cartForm"
               @submit.prevent="
                   isSubmitting = true;
+                  if (quantity > currentStock) {
+                      $dispatch('notify', { 
+                          message: `Solo quedan ${currentStock} unidades en stock`, 
+                          type: 'error' 
+                      });
+                      isSubmitting = false;
+                      return;
+                  }
+                  
                   fetch($refs.cartForm.action, {
                       method: 'POST',
                       body: new FormData($refs.cartForm),
@@ -91,26 +102,45 @@
                       return response.json();
                   })
                   .then(data => {
-                      inCart = true;
-                      $dispatch('notify', { message: 'Producto agregado al carrito', type: 'success' });
+                      if (data.success) {
+                          inCart = true;
+                          currentStock -= quantity;
+                          $dispatch('notify', { 
+                              message: data.message, 
+                              type: 'success' 
+                          });
+                      } else {
+                          $dispatch('notify', { 
+                              message: data.message, 
+                              type: 'error' 
+                          });
+                      }
                   })
                   .catch(error => {
-                      $dispatch('notify', { message: 'Error al agregar al carrito', type: 'error' });
+                      $dispatch('notify', { 
+                          message: 'Error al agregar al carrito', 
+                          type: 'error' 
+                      });
                   })
                   .finally(() => isSubmitting = false);
               ">
             @csrf
             <div class="flex items-center gap-2">
-                <input type="number" name="quantity" min="1" value="1" 
+                <input type="number" 
+                       name="quantity" 
+                       min="1" 
+                       :max="currentStock"
+                       x-model="quantity"
                        class="w-16 px-2 py-1 border rounded-md focus:ring-2 focus:ring-custom-red"
-                       x-bind:disabled="inCart || isSubmitting">
+                       x-bind:disabled="inCart || isSubmitting || currentStock === 0">
+                
                 <button type="submit" 
                         class="w-full text-white px-4 py-2 rounded-md transition-colors flex items-center justify-center gap-2"
                         :class="{ 
-                            'bg-gray-400 cursor-not-allowed': inCart || isSubmitting, 
-                            'bg-custom-red hover:bg-custom-red-hover': !inCart && !isSubmitting 
+                            'bg-gray-400 cursor-not-allowed': inCart || isSubmitting || currentStock === 0, 
+                            'bg-custom-red hover:bg-custom-red-hover': !inCart && !isSubmitting && currentStock > 0 
                         }"
-                        x-bind:disabled="inCart || isSubmitting">
+                        x-bind:disabled="inCart || isSubmitting || currentStock === 0">
                     <template x-if="!isSubmitting">
                         <span class="flex items-center gap-2">
                             <template x-if="inCart">
@@ -118,7 +148,12 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                             </template>
-                            <span x-text="inCart ? 'En el carrito' : 'Agregar al carrito'"></span>
+                            <template x-if="currentStock > 0">
+                                <span x-text="inCart ? 'En el carrito' : 'Agregar al carrito'"></span>
+                            </template>
+                            <template x-if="currentStock === 0">
+                                <span>Sin stock</span>
+                            </template>
                         </span>
                     </template>
                     <template x-if="isSubmitting">

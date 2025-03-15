@@ -4,54 +4,64 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-    
     public function index()
     {
-    
         $cart = Cart::firstOrCreate(['user_id' => Auth::id()]);
         return view('cart.index', compact('cart'));
     }
 
-    
-    public function add(Request $request, $id)
+    public function add(Producto $producto, Request $request)
     {
-       
-    $quantity = $request->input('quantity', 1);
+        $request->validate([
+            'quantity' => 'required|integer|min:1|max:' . $producto->stock
+        ]);
 
-    
-    $cart = Cart::firstOrCreate(['user_id' => Auth::id()]);
+        // Double-check stock availability
+        if ($producto->stock < $request->quantity) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No hay suficiente stock disponible'
+            ], 422);
+        }
 
+        $cart = Cart::firstOrCreate(['user_id' => Auth::id()]);
 
-    $cartItem = CartItem::where('cart_id', $cart->id)
-                        ->where('producto_id', $id)
-                        ->first();
-
-    if ($cartItem) {
-        
-        $cartItem->increment('quantity', $quantity);
-    } else {
-        
-        CartItem::create([
+        // Find existing cart item or create new
+        $cartItem = CartItem::firstOrNew([
             'cart_id' => $cart->id,
-            'producto_id' => $id,
-            'quantity' => $quantity,
+            'producto_id' => $producto->id
+        ]);
+
+        // Update quantity
+        $cartItem->quantity += $request->quantity;
+        $cartItem->save();
+
+        // Update product stock
+        $producto->decrement('stock', $request->quantity);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Producto agregado al carrito',
+            'new_stock' => $producto->fresh()->stock
         ]);
     }
 
-    return redirect()->back()->with('success', 'Producto agregado al carrito.');
-    }
-
-    
     public function remove($id)
     {
-        $cartItem = \App\Models\CartItem::findOrFail($id);
+        $cartItem = CartItem::findOrFail($id);
+        
+        // Restore stock before removing
+        $producto = $cartItem->producto;
+        $producto->increment('stock', $cartItem->quantity);
+        
         $cartItem->delete();
-    
+
         return redirect()->back()->with('success', 'Producto eliminado del carrito.');
     }
 }
