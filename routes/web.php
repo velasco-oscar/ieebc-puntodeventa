@@ -74,5 +74,6 @@ Route::middleware(['auth', 'can:admin'])
         Route::resource('productos', ProductoAdminController::class)
              ->names('productos');
         Route::resource('proveedores', ProveedorAdminController::class)
-             ->names('proveedores');
+             ->names('proveedores')
+             ->parameters(['proveedores' => 'proveedor']);
     });

@@ -1,46 +1,61 @@
-@extends('layouts.app')
-
-@section('content')
-<div class="max-w-2xl mx-auto py-8 px-4">
-    <h1 class="text-2xl font-bold text-gray-800 mb-6">Agregar Nuevo Proveedor</h1>
-    
-    <form action="{{ route('admin.providers.store') }}" method="POST" class="space-y-6">
-        @csrf
+{{-- resources/views/admin/proveedores/create.blade.php --}}
+<x-admin-layout>
+    <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">Nuevo Proveedor</h1>
         
-        <div>
-            <x-input-label for="nombre" :value="__('Nombre del Proveedor')" />
-            <x-text-input id="nombre" name="nombre" type="text" 
-                        class="mt-1 block w-full" required autofocus />
-            <x-input-error class="mt-2" :messages="$errors->get('nombre')" />
-        </div>
+        <form action="{{ route('admin.proveedores.store') }}" method="POST">
+            @csrf
+            
+            <!-- Nombre -->
+            <div class="mb-4">
+                <label for="nombre" class="block text-gray-700 font-medium mb-2">Nombre</label>
+                <input type="text" name="nombre" id="nombre" 
+                       class="w-full border border-gray-300 rounded p-2" 
+                       value="{{ old('nombre') }}" required>
+                @error('nombre')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-        <div>
-            <x-input-label for="contacto" :value="__('Persona de Contacto')" />
-            <x-text-input id="contacto" name="contacto" type="text" 
-                        class="mt-1 block w-full" required />
-            <x-input-error class="mt-2" :messages="$errors->get('contacto')" />
-        </div>
+            <!-- Email -->
+            <div class="mb-4">
+                <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+                <input type="email" name="email" id="email" 
+                       class="w-full border border-gray-300 rounded p-2" 
+                       value="{{ old('email') }}" required>
+                @error('email')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-        <div>
-            <x-input-label for="telefono" :value="__('Teléfono')" />
-            <x-text-input id="telefono" name="telefono" type="tel" 
-                        class="mt-1 block w-full" required />
-            <x-input-error class="mt-2" :messages="$errors->get('telefono')" />
-        </div>
+            <!-- Teléfono -->
+            <div class="mb-4">
+                <label for="telefono" class="block text-gray-700 font-medium mb-2">Teléfono</label>
+                <input type="text" name="telefono" id="telefono" 
+                       class="w-full border border-gray-300 rounded p-2" 
+                       value="{{ old('telefono') }}">
+                @error('telefono')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-        <div>
-            <x-input-label for="direccion" :value="__('Dirección')" />
-            <textarea id="direccion" name="direccion" 
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                    rows="3"></textarea>
-            <x-input-error class="mt-2" :messages="$errors->get('direccion')" />
-        </div>
+            <!-- Dirección -->
+            <div class="mb-4">
+                <label for="direccion" class="block text-gray-700 font-medium mb-2">Dirección</label>
+                <input type="text" name="direccion" id="direccion" 
+                       class="w-full border border-gray-300 rounded p-2" 
+                       value="{{ old('direccion') }}">
+                @error('direccion')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-        <div class="flex justify-end">
-            <x-primary-button class="bg-indigo-600 hover:bg-indigo-700">
-                {{ __('Guardar Proveedor') }}
-            </x-primary-button>
-        </div>
-    </form>
-</div>
-@endsection
+            <!-- Botón de envío -->
+            <div class="flex justify-end">
+                <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">
+                    Guardar Proveedor
+                </button>
+            </div>
+        </form>
+    </div>
+</x-admin-layout>

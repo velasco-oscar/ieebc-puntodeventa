@@ -24,7 +24,7 @@
             </tr>
         </thead>
         <tbody class="divide-y divide-gray-200">
-            @foreach($providers as $provider)
+            @foreach($proveedores as $provider)
                 <tr>
                     <td class="px-6 py-4">{{ $provider->nombre }}</td>
                     <td class="px-6 py-4">{{ $provider->email }}</td>
