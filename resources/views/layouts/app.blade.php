@@ -36,6 +36,14 @@
             </main>
         </div>
 
+        <script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.store('notifications', {
+            items: []  // Aquí defines la propiedad items, puede iniciar vacía o con datos
+        });
+    });
+</script>
+
         <!-- Livewire Scripts -->
         @livewireScripts
     </body>

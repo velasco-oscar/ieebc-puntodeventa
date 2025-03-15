@@ -32,27 +32,33 @@ class Wishlist extends Component
 
     public function addToCart($productoId)
     {
-        $user = Auth::user();
-        if (!$user) return;
-
-        $cart = Cart::firstOrCreate(['user_id' => $user->id]);
-
-        $cartItem = CartItem::where('cart_id', $cart->id)
-            ->where('producto_id', $productoId)
-            ->first();
-
-        if ($cartItem) {
-            $cartItem->increment('quantity');
-        } else {
-            CartItem::create([
-                'cart_id' => $cart->id,
-                'producto_id' => $productoId,
-                'quantity' => 1,
-            ]);
+        try {
+            $user = Auth::user();
+            if (!$user) return;
+    
+            $cart = Cart::firstOrCreate(['user_id' => $user->id]);
+    
+            $cartItem = CartItem::where('cart_id', $cart->id)
+                ->where('producto_id', $productoId)
+                ->first();
+    
+            if ($cartItem) {
+                $cartItem->increment('quantity');
+            } else {
+                CartItem::create([
+                    'cart_id' => $cart->id,
+                    'producto_id' => $productoId,
+                    'quantity' => 1,
+                    // Add any required missing columns here
+                ]);
+            }
+    
+            session()->flash('message', 'Producto agregado al carrito.');
+            $this->emit('cartUpdated');
+        } catch (\Exception $e) {
+            \Log::error('Cart error: ' . $e->getMessage());
+            session()->flash('error', 'Error adding to cart: ' . $e->getMessage());
         }
-
-        session()->flash('message', 'Producto agregado al carrito.');
-        $this->emit('cartUpdated'); 
     }
 
     public function removeItem($wishlistId)
