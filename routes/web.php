@@ -20,14 +20,17 @@ Route::get('/', function () {
 
 require __DIR__.'/auth.php';
 
+Route::resource('productos', ProductoController::class);
+
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        return redirect()->route('productos.index');
     })->name('dashboard');
+    
 
     Route::resource('clientes', ClienteController::class);
-    Route::resource('productos', ProductoController::class);
+
     Route::resource('proveedores', ProveedorController::class);
     Route::resource('ventas', VentaController::class);
     Route::resource('detalle_ventas', DetalleVentaController::class);
@@ -58,3 +61,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/wishlist', Wishlist::class)->name('wishlist.index');
 });
+
+Route::middleware(['auth', 'can:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::resource('products', ProductoController::class);
+        Route::resource('providers', ProveedorController::class);
+    });
