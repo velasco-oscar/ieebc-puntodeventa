@@ -11,7 +11,11 @@ use App\Http\Controllers\ListaDeseoController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\Admin\ProductoAdminController;
+use App\Http\Controllers\Admin\ProveedorAdminController;
 use App\Http\Livewire\Wishlist; 
+
+
 
 
 Route::get('/', function () {
@@ -67,6 +71,6 @@ Route::middleware(['auth', 'can:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-        Route::resource('productos', ProductoController::class); 
-        Route::resource('proveedores', ProveedorController::class); 
+        Route::resource('products', ProductoAdminController::class);
+        Route::resource('providers', ProveedorAdminController::class);
     });
