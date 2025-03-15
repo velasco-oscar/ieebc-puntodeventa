@@ -3,63 +3,80 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Producto;
+use App\Models\Proveedor;
 use Illuminate\Http\Request;
 
 class ProductoAdminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Lista todos los productos
     public function index()
     {
-        //
+        $productos = Producto::orderBy('created_at', 'desc')->get();
+        return view('admin.productos.index', compact('productos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Muestra el formulario para crear un nuevo producto
     public function create()
     {
-        //
+        $proveedores = Proveedor::all();
+        return view('admin.productos.create', compact('proveedores'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Guarda el nuevo producto en la base de datos
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nombre'       => 'required|string|max:255',
+            'descripcion'  => 'nullable|string',
+            'precio'       => 'required|numeric|min:0',
+            'stock'        => 'required|integer|min:0',
+            'proveedor_id' => 'required|exists:proveedores,id',
+            'imagen'       => 'nullable|url',
+        ]);
+
+        Producto::create($validated);
+
+        return redirect()->route('admin.productos.index')
+                         ->with('success', 'Producto creado correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // Muestra la información de un producto específico
+    public function show(Producto $producto)
     {
-        //
+        return view('admin.productos.show', compact('producto'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    // Muestra el formulario para editar un producto
+    public function edit(Producto $producto)
     {
-        //
+        $proveedores = Proveedor::all();
+        return view('admin.productos.edit', compact('producto', 'proveedores'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    // Actualiza el producto en la base de datos
+    public function update(Request $request, Producto $producto)
     {
-        //
+        $validated = $request->validate([
+            'nombre'       => 'required|string|max:255',
+            'descripcion'  => 'nullable|string',
+            'precio'       => 'required|numeric|min:0',
+            'stock'        => 'required|integer|min:0',
+            'proveedor_id' => 'required|exists:proveedores,id',
+            'imagen'       => 'nullable|url',
+        ]);
+
+        $producto->update($validated);
+
+        return redirect()->route('admin.productos.index')
+                         ->with('success', 'Producto actualizado correctamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    // Elimina el producto
+    public function destroy(Producto $producto)
     {
-        //
+        $producto->delete();
+        return redirect()->route('admin.productos.index')
+                         ->with('success', 'Producto eliminado correctamente.');
     }
 }

@@ -71,6 +71,7 @@ Route::middleware(['auth', 'can:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-        Route::resource('products', ProductoAdminController::class);
-        Route::resource('providers', ProveedorAdminController::class);
+        Route::resource('productos', ProductoAdminController::class);
+        Route::resource('proveedores', ProveedorAdminController::class)
+     ->parameters(['proveedores' => 'proveedores']);  // Force correct parameter name
     });

@@ -76,11 +76,11 @@
                 </p>
             </header>
             <div class="mt-4 flex flex-col space-y-3">
-                <a href="{{ route('admin.products.index') }}"
-                   class="text-indigo-700 hover:text-indigo-800 transition-colors duration-200">
-                    Productos
-                </a>
-                <a href="{{ route('admin.providers.index') }}"
+            <a href="{{ route('admin.productos.index') }}" class="text-indigo-700 hover:text-indigo-800 transition-colors duration-200">
+    Productos
+</a>
+
+                <a href="{{ route('admin.proveedores.index') }}"
                    class="text-indigo-700 hover:text-indigo-800 transition-colors duration-200">
                     Proveedores
                 </a>
