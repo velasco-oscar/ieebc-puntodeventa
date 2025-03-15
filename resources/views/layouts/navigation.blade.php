@@ -25,6 +25,17 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 18.343l-6.828-6.829a4 4 0 010-5.656z"></path>
                     </svg>
                 </a>
+                  <!-- Ícono de Campana para notificaciones -->
+                  <a href="{{ route('wishlist.index') }}" class="relative">
+                    <svg class="w-6 h-6 text-gray-900 hover:text-gray-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V4a2 2 0 10-4 0v1.341C7.67 7.165 6 9.388 6 12v2.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1"></path>
+                    </svg>
+                    @if($inStockWishlistedCount > 0)
+                        <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold text-white bg-red-600 rounded-full">
+                            {{ $inStockWishlistedCount }}
+                        </span>
+                    @endif
+                </a>
 
                 <!-- Ícono de Carrito -->
                 <a href="{{ route('cart.index') }}" class="relative">
