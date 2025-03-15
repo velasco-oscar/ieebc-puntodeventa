@@ -18,16 +18,14 @@
             <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
                 <div class="hidden sm:mb-8 sm:flex sm:justify-center">
                     <div class="relative rounded-full px-3 py-1 text-sm text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                        Más proyectos. <a href="https://github.com/velasco-oscar/ieebc-puntodeventa" class="font-semibold text-indigo-600"><span class="absolute inset-0" aria-hidden="true"></span>GitHub<span aria-hidden="true">&rarr;</span></a>
+                        Más proyectos. <a href="https://github.com/velasco-oscar/ieebc-puntodeventa" class="font-semibold text-custom-red"><span class="absolute inset-0" aria-hidden="true"></span>GitHub<span aria-hidden="true">&rarr;</span></a>
                     </div>
                 </div>
                 <div class="text-center">
                     <h1 class="text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">Mexicali Card Shop</h1>
                     <p class="mt-8 text-lg font-medium text-gray-500 sm:text-xl">El punto de venta más grande en Mexicali para los juegos de cartas coleccionables.</p>
                     <div class="mt-10 flex items-center justify-center gap-x-6">
-                    <a href="{{ route('productos.index') }}" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500">Catálogo</a>
-
-                        <a href="#" class="text-sm font-semibold text-gray-900">Learn more <span aria-hidden="true">→</span></a>
+                    <a href="{{ route('productos.index') }}" class="rounded-md bg-custom-red px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-custom-red-hover">Catálogo</a>
                     </div>
                 </div>
             </div>
